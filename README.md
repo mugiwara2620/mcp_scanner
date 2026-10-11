@@ -7,6 +7,18 @@ laisse passer que les outils sains — sans que l'agent sache qu'un serveur a é
 
 ---
 
+## Démo (37 s)
+
+https://github.com/mugiwara2620/mcp_scanner/raw/main/mcp_scanner_demo.mp4
+
+> L'attaque réussit sur **Claude Haiku 5** (5/5) et échoue sur **Claude Sonnet 5** (0/5) ;
+> le scanner détecte et retire le serveur piégé (**DANGEREUX 9/10**) tout en laissant
+> passer les outils sains.
+
+[▶ Ouvrir la vidéo](mcp_scanner_demo.mp4) si le lecteur ne s'affiche pas.
+
+---
+
 ## Le problème
 
 Un agent IA utilise des **serveurs MCP** pour obtenir des outils (lire un
