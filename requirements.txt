@@ -2,3 +2,4 @@ mcp<2
 streamlit
 anthropic
 openai
+boto3

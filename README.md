@@ -81,3 +81,45 @@ description honnête, serait invisible à l'agent comme au filtre. Défendre con
 ça demanderait un autre mécanisme (audit ou exécution en bac à sable). Le projet
 traite le tool poisoning **par la description**, qui est l'attaque documentée et
 la plus répandue.
+
+---
+
+## Démo (interface)
+
+Une démo bout-en-bout montre le filtre en action sur les 4 serveurs piégés de
+`attacks/` plus quelques outils sains, en un clic.
+
+```bash
+pip install -r requirements.txt
+# le juge utilise AWS Bedrock : fournis les credentials AWS habituels + un modèle
+export BEDROCK_MODEL_ID="..."      # ou ANTHROPIC_DEFAULT_SONNET_MODEL
+streamlit run demo.py
+```
+
+Cliquez sur **« Analyser les outils »**. Pour chaque outil, la démo affiche son
+nom, le verdict (dangereux / suspect / sain), le score du juge LLM, les alertes
+de règles, et la raison. Les outils dangereux sont présentés en premier.
+
+### Sans credentials / hors-ligne
+
+La démo reste fonctionnelle sans credentials ni réseau : les **règles** tournent,
+le juge est indisponible, et le scanner **échoue en fermeture** — tout outil non
+vérifié est classé « dangereux » par sécurité (comportement de `scanner.py`).
+C'est voulu, et cela illustre la thèse du projet : *ces attaques sont écrites
+pour échapper aux règles ; c'est le juge LLM qui les départage.*
+
+Une variante terminal (sans Streamlit) est disponible pour un test rapide :
+
+```bash
+python demo.py --cli
+```
+
+### Pièces de la démo
+
+| Fichier | Rôle |
+|---|---|
+| `demo.py` | Interface Streamlit (+ repli terminal) qui orchestre tout. |
+| `fixtures.py` | Charge nom + description de chaque outil du dossier `attacks/` (lecture statique, sans dépendre du SDK MCP). |
+| `scanner.py` | Combine règles + juge en un verdict (dangereux / suspect / sain), fail-closed. |
+| `rules.py` | Détecteur par règles (mots-clés, chemins sensibles, balises cachées…). |
+| `judge.py` | Juge LLM (AWS Bedrock) : score 0–10 + raison. |
